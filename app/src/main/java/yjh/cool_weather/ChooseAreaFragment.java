@@ -7,6 +7,7 @@ package yjh.cool_weather;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -56,34 +57,16 @@ public class ChooseAreaFragment extends Fragment {
 
     private List<String> dataList = new ArrayList<>();
 
-    /**
-     * 省列表
-     */
     private List<Province> provinceList;
 
-    /**
-     * 市列表
-     */
     private List<City> cityList;
 
-    /**
-     * 县列表
-     */
     private List<County> countyList;
 
-    /**
-     * 选中的省份
-     */
     private Province selectedProvince;
 
-    /**
-     * 选中的城市
-     */
     private City selectedCity;
 
-    /**
-     * 当前选中的级别
-     */
     private int currentLevel;
 
 
@@ -111,6 +94,14 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
                 }
             }
         });
